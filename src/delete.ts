@@ -78,9 +78,12 @@ export function finalIds(input: Input): Observable<string[]> {
 
         // Filter out tags that are to be ignored only when including tags is enabled
         if (input.includeTags === 'true') {
+          console.log('Filtering out tags from ignore-versions')
+          console.log(`Before filtering: ${value}`)
           value = value.filter(
             info => !info.tags.some(tag => input.ignoreVersions.test(tag))
           )
+          console.log(`After filtering: ${value}`)
         }
 
         if (input.deleteUntaggedVersions === 'true') {
@@ -129,6 +132,7 @@ export function deleteVersions(input: Input): Observable<boolean> {
 
   return result.pipe(
     concatMap(ids =>
+      console.log(`Deleting packages with IDs: ${ids}`)
       deletePackageVersions(
         ids,
         input.owner,
